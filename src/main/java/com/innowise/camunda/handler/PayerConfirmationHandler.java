@@ -1,32 +1,23 @@
 package com.innowise.camunda.handler;
 
-import com.innowise.camunda.service.PayerConfirmationResponseService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class CheckChannelHandler implements JobHandler {
-
-    private final PayerConfirmationResponseService payerConfirmationResponseService;
-
+public class PayerConfirmationHandler implements JobHandler {
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
 
-        //TODO: Add logic
-        final boolean isPayerConfirmationRequired = true;
-
-        final boolean payerConfirmationResponseRequired =
-            payerConfirmationResponseService.isPayerConfirmationResponseRequired(isPayerConfirmationRequired);
+        //TODO: add logic for adding confirmation
+        String payerConfirmationStatus = "confirmed"; // "OR rejected"
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("payerConfirmationResponseRequired", payerConfirmationResponseRequired);
+        outputVariables.put("payerConfirmationStatus", payerConfirmationStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
