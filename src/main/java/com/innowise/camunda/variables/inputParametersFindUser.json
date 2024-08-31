@@ -1,0 +1,14 @@
+{
+  "orderId": "1",
+  "processPaymentId": 1,
+  "paymentId": "1",
+  "paymentType": "Internal Payment",
+  "payerAccountId": "CM2110002000300277976315008",
+  "payeeAccountId": "AB2110002000300277976315009",
+  "currencyCode": 933,
+  "amount": 2000,
+  "paymentOrderStartedAt": "05-10-2020",
+  "remittanceDetails": "internal-payment",
+  "channel": "MK4352",
+  "startedAt": "05-10-2020"
+}

@@ -1,0 +1,14 @@
+spring:
+  application.name: CamundaInnowise
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  port: 7896
+
+zeebe:
+  client:
+    broker:
+      gateway-address: http://localhost:26500
+    security:
+      plaintext: true
