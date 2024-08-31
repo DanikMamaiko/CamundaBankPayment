@@ -1,6 +1,5 @@
 package com.innowise.camunda.worker;
 
-import com.innowise.camunda.handler.SendErrorEventHandler;
 import com.innowise.camunda.handler.SettlePayerFundsHandler;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
