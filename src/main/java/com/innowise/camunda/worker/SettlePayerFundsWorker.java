@@ -1,6 +1,7 @@
 package com.innowise.camunda.worker;
 
-import com.innowise.camunda.handler.TransferFundsHandler;
+import com.innowise.camunda.handler.SendErrorEventHandler;
+import com.innowise.camunda.handler.SettlePayerFundsHandler;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
@@ -9,12 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TransferFundsWorker {
+public class SettlePayerFundsWorker {
 
-    private final TransferFundsHandler handler;
+    private final SettlePayerFundsHandler handler;
 
     @JobWorker(type = "intra-bank-payer-settle-funds")
-    public void transferFunds(final JobClient client, final ActivatedJob job) throws Exception {
+    public void settlePayerFunds(final JobClient client, final ActivatedJob job) throws Exception {
         handler.handle(client, job);
     }
 }
