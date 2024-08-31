@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransferFundsHandler implements JobHandler {
+public class TransferPayerFundsHandler implements JobHandler {
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         Map<String, Object> inputVariables = job.getVariablesAsMap();
