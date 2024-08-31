@@ -21,16 +21,17 @@ public class PayeeQuoteHandler implements JobHandler {
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
         final String orderId = (String) inputVariables.get("orderId");
-        final Integer processPaymentId = (Integer) inputVariables.get("processPaymentId");
+        final Integer processId = (Integer) inputVariables.get("processId");
         final String paymentId = (String) inputVariables.get("paymentId");
         final String paymentType = (String) inputVariables.get("paymentType");
-        final String payerAccountId =  (String) inputVariables.get("payerAccountId");
         final String payeeAccountId = (String) inputVariables.get("payeeAccountId");
-        final Integer currencyCode = (Integer) inputVariables.get("currencyCode");
+        final String currency = (String) inputVariables.get("currency");//?
         final Integer amount = (Integer) inputVariables.get("amount");
         final String remittanceDetails =  (String) inputVariables.get("remittanceDetails");
         final String channel =  (String) inputVariables.get("channel");
-        final String startedAt =  (String) inputVariables.get("startedAt");
+        final String paymentOrderStartedAt =  (String) inputVariables.get("paymentOrderStartedAt");
+
+
 
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
@@ -42,17 +43,16 @@ public class PayeeQuoteHandler implements JobHandler {
         String payeeQuoteStatus = amsResponse.payeeQuoteLookupStatus();
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("processId", processPaymentId);
-        outputVariables.put("startedAt", startedAt);
-        outputVariables.put("completedAt", null);
-        outputVariables.put("responseSent", true);
-        outputVariables.put("requestReceived", true);
-        outputVariables.put("payeeAccountName", null);
-        outputVariables.put("payeeQuoteLookupStatus", payeeQuoteStatus);
-        outputVariables.put("payeeLookupRetryNumber", null);
-        outputVariables.put("ID", null);
-        outputVariables.put("transactionStatus", null);
-        outputVariables.put("errorInformation", "USER WAS CHECKED: amsResponse.payeeLookupStatus()");
+        outputVariables.put("orderId", orderId);
+        outputVariables.put("paymentId", paymentId);
+        outputVariables.put("paymentType", paymentType);
+        outputVariables.put("payeeAccountId", payeeAccountId);
+        outputVariables.put("currency", currency);
+        outputVariables.put("amount", amount);
+        outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
+        outputVariables.put("remittanceDetails", remittanceDetails);
+        outputVariables.put("channel", channel);
+
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
