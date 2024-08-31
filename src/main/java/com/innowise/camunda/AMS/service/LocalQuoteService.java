@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocalQuoteService {
 
-    public String isChannelExist(String channel) {
+    public String localQuoteRequest(String channel) {
         if(List.of("MK4352").contains(channel)) {
             return "exist";
         } else {

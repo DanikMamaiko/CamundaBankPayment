@@ -20,7 +20,7 @@ public class LocalQuoteHandler implements JobHandler {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
         final String channel = (String) inputVariables.get("channel");
 
-        final String localQuoteLookupStatus = localQuoteService.isChannelExist(channel);
+        final String localQuoteLookupStatus = localQuoteService.localQuoteRequest(channel);
 
         final Map<String, Object> outputVariables = new HashMap<>();
         outputVariables.put("localQuoteLookupStatus", localQuoteLookupStatus);
