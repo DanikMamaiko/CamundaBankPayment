@@ -20,21 +20,26 @@ public class PayeeLookupHandler implements JobHandler {
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
-        final String orderId = (String) inputVariables.get("orderId");
-        final Integer processPaymentId = (Integer) inputVariables.get("processPaymentId");
-        final String paymentId = (String) inputVariables.get("paymentId");
-        final String paymentType = (String) inputVariables.get("paymentType");
-        final String payerAccountId =  (String) inputVariables.get("payerAccountId");
-        final String payeeAccountId = (String) inputVariables.get("payeeAccountId");
-        final Integer currencyCode = (Integer) inputVariables.get("currencyCode");
-        final Integer amount = (Integer) inputVariables.get("amount");
-        final String remittanceDetails =  (String) inputVariables.get("remittanceDetails");
-        final String channel =  (String) inputVariables.get("channel");
-        final String startedAt =  (String) inputVariables.get("startedAt");
+
+        final String orderId = (String) inputVariables.get("orderId"); // Unique identifier for the payment order
+        final Integer processId = (Integer) inputVariables.get("processId"); // ID of the process in Camunda
+        final String paymentId = (String) inputVariables.get("paymentId"); // Unique identifier for the payment transaction
+        final String payerAccountId = (String) inputVariables.get("payerAccountId"); // Identifier of the payer's IBAN
+        final String payeeAccountId = (String) inputVariables.get("payeeAccountId"); // Identifier of the payee's IBAN
+        final Integer currencyCode = (Integer) inputVariables.get("currencyCode"); // Currency of the instruction (transfer)
+        final Integer amount = (Integer) inputVariables.get("amount"); // Amount of the instruction (transfer)
+        final String remittanceDetails = (String) inputVariables.get("remittanceDetails"); // Information about the purpose or nature of the payment
+        final String channel = (String) inputVariables.get("channel"); // Communication channel through which the payment order was received
+        final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
+
+        final String validationStatus = (String) inputVariables.get("validationStatus"); // Статус валидации
+        final String validationMessage = (String) inputVariables.get("validationMessage"); // Сообщение о валидации
+
+
+
 
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
-            .payment(paymentType)
             .payeeAccountId(payeeAccountId)
             .build();
 
@@ -42,17 +47,10 @@ public class PayeeLookupHandler implements JobHandler {
         String payeeLookupStatus = amsResponse.payeeLookupStatus();
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("processId", processPaymentId);
-        outputVariables.put("startedAt", startedAt);
-        outputVariables.put("completedAt", null);
-        outputVariables.put("responseSent", true);
-        outputVariables.put("requestReceived", true);
-        outputVariables.put("payeeAccountName", null);
-        outputVariables.put("payeeLookupStatus", payeeLookupStatus);
-        outputVariables.put("payeeLookupRetryNumber", null);
-        outputVariables.put("ID", null);
-        outputVariables.put("transactionStatus", null);
-        outputVariables.put("errorInformation", "USER WAS CHECKED: amsResponse.payeeLookupStatus()");
+        outputVariables.put("orderId", orderId);
+        outputVariables.put("paymentId", paymentId);
+        outputVariables.put("payeeAccountId", payeeAccountId);
+
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
