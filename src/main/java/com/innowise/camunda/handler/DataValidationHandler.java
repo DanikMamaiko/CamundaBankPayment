@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataValidationHandler implements JobHandler {
 
+
     private final DataValidationService dataValidationService;
 
     @Override
@@ -40,20 +41,11 @@ public class DataValidationHandler implements JobHandler {
             (HashMap<String, Object>) inputVariables);
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-//        outputVariables.put("orderId", orderId);
-//        outputVariables.put("processPaymentId", processPaymentId);
-//        outputVariables.put("paymentId", paymentId);
-//        outputVariables.put("processId", null);
-//        outputVariables.put("paymentType", paymentType);
-//        outputVariables.put("startedAt", startedAt);
-//        outputVariables.put("completedAt", null);
-//        outputVariables.put("paymentStep", null);
-//        outputVariables.put("payerAccountId", payerAccountId);
-//        outputVariables.put("payeeAccountId", payeeAccountId);
-//        outputVariables.put("currencyCode", currencyCode);
-//        outputVariables.put("amount", amount);
-//        outputVariables.put("remittanceDetails", remittanceDetails);
-//        outputVariables.put("channel", channel);
+
+        outputVariables.put("processId", null);
+        outputVariables.put("startedAt", startedAt);
+        outputVariables.put("completedAt", null);
+        outputVariables.put("paymentStep", null);
         outputVariables.put("validationStatus", validationStatus.status());
         outputVariables.put("validationMessage", validationStatus.message());
 

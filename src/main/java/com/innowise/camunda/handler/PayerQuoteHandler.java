@@ -20,19 +20,20 @@ public class PayerQuoteHandler implements JobHandler {
 
     final private QuotePayerService quotePayerService;
 
+
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
         final String orderId = (String) inputVariables.get("orderId");
-//        final Integer processId = (Integer) inputVariables.get("processId");
-//        final String paymentId = (String) inputVariables.get("paymentId");
+        final Integer processId = (Integer) inputVariables.get("processId");//?
+        final String paymentId = (String) inputVariables.get("paymentId");
         final String paymentType = (String) inputVariables.get("paymentType");
         final String payerAccountId = (String) inputVariables.get("payerAccountId");
-//        final Integer currencyCode = (Integer) inputVariables.get("currencyCode");
-//        final Integer amount = (Integer) inputVariables.get("amount");
-//        final String remittanceDetails = (String) inputVariables.get("remittanceDetails");
-//        final String channel = (String) inputVariables.get("channel");
-//        final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
+        final Integer currencyCode = (Integer) inputVariables.get("currencyCode");
+        final Integer amount = (Integer) inputVariables.get("amount");
+        final String remittanceDetails = (String) inputVariables.get("remittanceDetails");
+        final String channel = (String) inputVariables.get("channel");
+        final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
 
         PayerQuoteRequest payerQuoteRequest = PayerQuoteRequest.builder()
                 .orderId(orderId)
@@ -44,16 +45,7 @@ public class PayerQuoteHandler implements JobHandler {
         String payerQuoteStatus = payerQuoteResponse.payerQuoteLookupStatus();
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("orderId", orderId);
-//        outputVariables.put("paymentId", paymentId);
-//        outputVariables.put("paymentType", paymentType);
-//        outputVariables.put("payerAccountId", payerAccountId);
-//        outputVariables.put("currencyCode", currencyCode);
-//        outputVariables.put("amount", amount);
-//        outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
-//        outputVariables.put("remittanceDetails", remittanceDetails);
-//        outputVariables.put("channel", channel);
-//        outputVariables.put("transactionStatus", null);
+        outputVariables.put("payeeAccountId", null);
         outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
         outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
 
