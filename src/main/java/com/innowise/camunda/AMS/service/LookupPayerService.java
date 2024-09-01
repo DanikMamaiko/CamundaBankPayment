@@ -1,12 +1,9 @@
 package com.innowise.camunda.AMS.service;
 
-import com.innowise.camunda.AMS.dto.AmsRequest;
-import com.innowise.camunda.AMS.dto.AmsResponse;
 import com.innowise.camunda.AMS.dto.PayerLookupRequest;
 import com.innowise.camunda.AMS.dto.PayerLookupResponse;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class LookupPayerService {

@@ -34,7 +34,6 @@ public class PayerQuoteHandler implements JobHandler {
         final String channel = (String) inputVariables.get("channel");
         final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
 
-
         PayerQuoteRequest payerQuoteRequest = PayerQuoteRequest.builder()
                 .orderId(orderId)
                 .payment(paymentType)
@@ -42,7 +41,7 @@ public class PayerQuoteHandler implements JobHandler {
                 .build();
 
         PayerQuoteResponse payerQuoteResponse = quotePayerService.quotePayer(payerQuoteRequest);
-        String payeeQuoteStatus = payerQuoteResponse.payerQuoteLookupStatus();
+        String payerQuoteStatus = payerQuoteResponse.payerQuoteLookupStatus();
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
         outputVariables.put("orderId", orderId);
@@ -55,7 +54,8 @@ public class PayerQuoteHandler implements JobHandler {
         outputVariables.put("remittanceDetails", remittanceDetails);
         outputVariables.put("channel", channel);
         outputVariables.put("transactionStatus", null);
-        outputVariables.put("errorInformation", "USER WAS CHECKED: amsResponse.payeeLookupStatus()");
+        outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
+        outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
