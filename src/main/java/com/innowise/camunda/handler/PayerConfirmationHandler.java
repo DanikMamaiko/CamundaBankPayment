@@ -27,7 +27,6 @@ public class PayerConfirmationHandler implements JobHandler {
         //TODO: add logic for adding confirmation
         String payerConfirmationStatus = "confirmed"; // "OR rejected"
 
-
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 
         outputVariables.put("orderId", orderId);
@@ -40,7 +39,7 @@ public class PayerConfirmationHandler implements JobHandler {
         outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
         outputVariables.put("remittanceDetails", remittanceDetails);
         outputVariables.put("channel", channel);
-       // outputVariables.put("payerConfirmationStatus", payerConfirmationStatus);
+        outputVariables.put("payerConfirmationStatus", payerConfirmationStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

@@ -29,7 +29,6 @@ public class CheckChannelHandler implements JobHandler {
         final String channel =  (String) inputVariables.get("channel");
         final String paymentOrderStartedAt =  (String) inputVariables.get("paymentOrderStartedAt");
 
-
         //TODO: Add logic
         final boolean isPayerConfirmationRequired = true;
 
@@ -47,10 +46,7 @@ public class CheckChannelHandler implements JobHandler {
         outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
         outputVariables.put("remittanceDetails", remittanceDetails);
         outputVariables.put("channel", channel);
-        outputVariables.put("payerConfirmationResponseRequired", true);//?
-
-
-//        outputVariables.put("payerConfirmationResponseRequired", payerConfirmationResponseRequired);
+        outputVariables.put("payerConfirmationResponseRequired", payerConfirmationResponseRequired);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

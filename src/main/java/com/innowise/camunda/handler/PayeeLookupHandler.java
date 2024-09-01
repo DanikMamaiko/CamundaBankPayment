@@ -31,12 +31,8 @@ public class PayeeLookupHandler implements JobHandler {
         final String remittanceDetails = (String) inputVariables.get("remittanceDetails"); // Information about the purpose or nature of the payment
         final String channel = (String) inputVariables.get("channel"); // Communication channel through which the payment order was received
         final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
-
         final String validationStatus = (String) inputVariables.get("validationStatus"); // Статус валидации
         final String validationMessage = (String) inputVariables.get("validationMessage"); // Сообщение о валидации
-
-
-
 
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
@@ -50,7 +46,7 @@ public class PayeeLookupHandler implements JobHandler {
         outputVariables.put("orderId", orderId);
         outputVariables.put("paymentId", paymentId);
         outputVariables.put("payeeAccountId", payeeAccountId);
-
+        outputVariables.put("payeeLookupStatus", payeeLookupStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

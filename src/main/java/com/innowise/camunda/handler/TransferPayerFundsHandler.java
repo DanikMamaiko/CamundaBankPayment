@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 public class TransferPayerFundsHandler implements JobHandler {
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
-
-
         Map<String, Object> inputVariables = job.getVariablesAsMap();
         final String orderId = (String) inputVariables.get("orderId");
         final Integer processId = (Integer) inputVariables.get("processId");
@@ -21,10 +19,8 @@ public class TransferPayerFundsHandler implements JobHandler {
         final String payerAccountId = (String) inputVariables.get("payerAccountId");
         final String payeeAccountId = (String) inputVariables.get("payeeAccountId");
 
-
         //TODO: Add logic
-        String settlementTransactionStatus = "success";
-
+        String releaseBlockFundsTransactionStatus = "success";
 
         Map<String, Object> outputVariables = new HashMap<>();
         outputVariables.put("orderId", orderId);
@@ -32,9 +28,7 @@ public class TransferPayerFundsHandler implements JobHandler {
         outputVariables.put("paymentType", paymentType);
         outputVariables.put("payerAccountId", payerAccountId);
         outputVariables.put("payeeAccountId", payeeAccountId);
-        outputVariables.put("command", settlementTransactionStatus);
-       // blockTransactionId → blockFundsTransactionId
-
+        outputVariables.put("releaseBlockFundsTransactionStatus", releaseBlockFundsTransactionStatus);
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
 }

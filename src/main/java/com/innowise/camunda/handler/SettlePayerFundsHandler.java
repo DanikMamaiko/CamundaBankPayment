@@ -23,7 +23,7 @@ public class SettlePayerFundsHandler implements JobHandler {
           //      fundsTransferTransactionId
 
         //TODO: add logic
-        String releaseBlockFundsTransactionStatus = "releaseBlockSuccess"; // OR releaseBlockFailed
+        String settlementTransactionStatus = "releaseBlockSuccess"; // OR releaseBlockFailed
 
         Map<String, Object> outputVariables = new HashMap<>();
 
@@ -32,9 +32,7 @@ public class SettlePayerFundsHandler implements JobHandler {
         outputVariables.put("paymentType", paymentType);
         outputVariables.put("payerAccountId", payerAccountId);
         outputVariables.put("payeeAccountId", payeeAccountId);
-
-
-        //?outputVariables.put("releaseBlockFundsTransactionStatus", releaseBlockFundsTransactionStatus);
+        outputVariables.put("settlementTransactionStatus", settlementTransactionStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
