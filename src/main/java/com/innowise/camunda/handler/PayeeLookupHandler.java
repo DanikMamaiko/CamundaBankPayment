@@ -22,17 +22,17 @@ public class PayeeLookupHandler implements JobHandler {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
 
         final String orderId = (String) inputVariables.get("orderId"); // Unique identifier for the payment order
-        final Integer processId = (Integer) inputVariables.get("processId"); // ID of the process in Camunda
+//        final Integer processId = (Integer) inputVariables.get("processId"); // ID of the process in Camunda
         final String paymentId = (String) inputVariables.get("paymentId"); // Unique identifier for the payment transaction
-        final String payerAccountId = (String) inputVariables.get("payerAccountId"); // Identifier of the payer's IBAN
+//        final String payerAccountId = (String) inputVariables.get("payerAccountId"); // Identifier of the payer's IBAN
         final String payeeAccountId = (String) inputVariables.get("payeeAccountId"); // Identifier of the payee's IBAN
-        final Integer currencyCode = (Integer) inputVariables.get("currencyCode"); // Currency of the instruction (transfer)
-        final Integer amount = (Integer) inputVariables.get("amount"); // Amount of the instruction (transfer)
-        final String remittanceDetails = (String) inputVariables.get("remittanceDetails"); // Information about the purpose or nature of the payment
-        final String channel = (String) inputVariables.get("channel"); // Communication channel through which the payment order was received
-        final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
-        final String validationStatus = (String) inputVariables.get("validationStatus"); // Статус валидации
-        final String validationMessage = (String) inputVariables.get("validationMessage"); // Сообщение о валидации
+//        final Integer currencyCode = (Integer) inputVariables.get("currencyCode"); // Currency of the instruction (transfer)
+//        final Integer amount = (Integer) inputVariables.get("amount"); // Amount of the instruction (transfer)
+//        final String remittanceDetails = (String) inputVariables.get("remittanceDetails"); // Information about the purpose or nature of the payment
+//        final String channel = (String) inputVariables.get("channel"); // Communication channel through which the payment order was received
+//        final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
+//        final String validationStatus = (String) inputVariables.get("validationStatus"); // Статус валидации
+//        final String validationMessage = (String) inputVariables.get("validationMessage"); // Сообщение о валидации
 
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
