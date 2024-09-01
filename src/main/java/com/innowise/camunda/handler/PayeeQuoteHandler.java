@@ -31,8 +31,6 @@ public class PayeeQuoteHandler implements JobHandler {
         final String channel =  (String) inputVariables.get("channel");
         final String paymentOrderStartedAt =  (String) inputVariables.get("paymentOrderStartedAt");
 
-
-
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
             .payment(paymentType)
@@ -52,7 +50,7 @@ public class PayeeQuoteHandler implements JobHandler {
         outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
         outputVariables.put("remittanceDetails", remittanceDetails);
         outputVariables.put("channel", channel);
-
+        outputVariables.put("payeeQuoteStatus", payeeQuoteStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

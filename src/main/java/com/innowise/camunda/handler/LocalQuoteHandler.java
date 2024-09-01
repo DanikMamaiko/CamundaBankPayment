@@ -45,8 +45,7 @@ public class LocalQuoteHandler implements JobHandler {
         outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
         outputVariables.put("remittanceDetails", remittanceDetails);
         outputVariables.put("channel", channel);
-
-        //outputVariables.put("localQuoteLookupStatus", localQuoteLookupStatus);
+        outputVariables.put("localQuoteLookupStatus", localQuoteLookupStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
