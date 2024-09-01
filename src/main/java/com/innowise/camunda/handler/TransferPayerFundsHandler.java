@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TransferPayerFundsHandler implements JobHandler {
+
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         Map<String, Object> inputVariables = job.getVariablesAsMap();
@@ -18,17 +19,17 @@ public class TransferPayerFundsHandler implements JobHandler {
         final String paymentType = (String) inputVariables.get("paymentType");
         final String payerAccountId = (String) inputVariables.get("payerAccountId");
         final String payeeAccountId = (String) inputVariables.get("payeeAccountId");
+        final String blockFundsTransactionId = (String) inputVariables.get("blockFundsTransactionStatus");
+
 
         //TODO: Add logic
         String releaseBlockFundsTransactionStatus = "success";
 
         Map<String, Object> outputVariables = new HashMap<>();
-        outputVariables.put("orderId", orderId);
-        outputVariables.put("paymentId", paymentId);
-        outputVariables.put("paymentType", paymentType);
-        outputVariables.put("payerAccountId", payerAccountId);
-        outputVariables.put("payeeAccountId", payeeAccountId);
+
+        outputVariables.put("command", null);
         outputVariables.put("releaseBlockFundsTransactionStatus", releaseBlockFundsTransactionStatus);
+        outputVariables.put("fundsTransferTransactionId", null);
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
 }

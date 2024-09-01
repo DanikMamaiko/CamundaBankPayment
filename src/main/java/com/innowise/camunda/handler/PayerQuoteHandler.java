@@ -20,11 +20,12 @@ public class PayerQuoteHandler implements JobHandler {
 
     final private QuotePayerService quotePayerService;
 
+
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
         final String orderId = (String) inputVariables.get("orderId");
-        final Integer processId = (Integer) inputVariables.get("processId");
+        final Integer processId = (Integer) inputVariables.get("processId");//?
         final String paymentId = (String) inputVariables.get("paymentId");
         final String paymentType = (String) inputVariables.get("paymentType");
         final String payerAccountId = (String) inputVariables.get("payerAccountId");
@@ -43,19 +44,12 @@ public class PayerQuoteHandler implements JobHandler {
         PayerQuoteResponse payerQuoteResponse = quotePayerService.quotePayer(payerQuoteRequest);
         String payerQuoteStatus = payerQuoteResponse.payerQuoteLookupStatus();
 
+
+
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("orderId", orderId);
-        outputVariables.put("paymentId", paymentId);
-        outputVariables.put("paymentType", paymentType);
-        outputVariables.put("payerAccountId", payerAccountId);
-        outputVariables.put("currencyCode", currencyCode);
-        outputVariables.put("amount", amount);
-        outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
-        outputVariables.put("remittanceDetails", remittanceDetails);
-        outputVariables.put("channel", channel);
-        outputVariables.put("transactionStatus", null);
-        outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
-        outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
+        outputVariables.put("payeeAccountId", null);
+        //outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
+        //outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

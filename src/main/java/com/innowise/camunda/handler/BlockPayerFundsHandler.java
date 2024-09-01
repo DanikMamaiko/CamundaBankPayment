@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BlockPayerFundsHandler implements JobHandler {
+
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         final Map<String, Object> inputVariables = job.getVariablesAsMap();
@@ -23,13 +24,8 @@ public class BlockPayerFundsHandler implements JobHandler {
         String blockFundsTransactionStatus = "blockSuccess"; // OR blockFailed
 
         Map<String, Object> outputVariables = job.getVariablesAsMap();
-
-        outputVariables.put("orderId", orderId);
-        outputVariables.put("paymentId", paymentId);
-        outputVariables.put("paymentType", paymentType);
-        outputVariables.put("payerAccountId", payerAccountId);
-        outputVariables.put("currencyCode", currencyCode);
-        outputVariables.put("amount", amount);
+        outputVariables.put("payeeAccountId", null);
+        outputVariables.put("command", null);
         outputVariables.put("blockFundsTransactionStatus", blockFundsTransactionStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();

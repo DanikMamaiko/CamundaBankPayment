@@ -35,17 +35,8 @@ public class LocalQuoteHandler implements JobHandler {
 
         final Map<String, Object> outputVariables = new HashMap<>();
 
-        outputVariables.put("orderId", orderId);
-        outputVariables.put("paymentId", paymentId);
-        outputVariables.put("paymentType", paymentType);
-        outputVariables.put("payerAccountId", payerAccountId);
-        outputVariables.put("payeeAccountId", payeeAccountId);
-        outputVariables.put("currency", currency);
-        outputVariables.put("amount", amount);
-        outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
-        outputVariables.put("remittanceDetails", remittanceDetails);
-        outputVariables.put("channel", channel);
         outputVariables.put("localQuoteLookupStatus", localQuoteLookupStatus);
+        outputVariables.put("currencyCode", null);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

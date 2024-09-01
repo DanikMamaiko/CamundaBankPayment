@@ -35,17 +35,9 @@ public class CheckChannelHandler implements JobHandler {
         final boolean payerConfirmationResponseRequired =
             payerConfirmationResponseService.isPayerConfirmationResponseRequired(isPayerConfirmationRequired);
 
+
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
-        outputVariables.put("orderId", orderId);
-        outputVariables.put("paymentId", paymentId);
-        outputVariables.put("processId", processId);
-        outputVariables.put("paymentType", paymentType);
-        outputVariables.put("payerAccountId", payerAccountId);
-        outputVariables.put("currencyCode", currencyCode);
-        outputVariables.put("amount", amount);
-        outputVariables.put("paymentOrderStartedAt", paymentOrderStartedAt);
-        outputVariables.put("remittanceDetails", remittanceDetails);
-        outputVariables.put("channel", channel);
+
         outputVariables.put("payerConfirmationResponseRequired", payerConfirmationResponseRequired);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
