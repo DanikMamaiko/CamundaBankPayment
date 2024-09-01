@@ -45,11 +45,8 @@ public class PayerLookupHandler implements JobHandler {
                 .build();
 
         final String requestSentAt = Instant.now().toString();
-
         PayerLookupResponse payerLookupResponse = lookupPayerService.lookupPayer(payerLookupRequest);
-
         final String responseReceivedAt = Instant.now().toString();
-
 
         String payerLookupStatus = payerLookupResponse.payerLookupStatus();
 
