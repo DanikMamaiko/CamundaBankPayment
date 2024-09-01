@@ -38,14 +38,14 @@ public class PayeeQuoteHandler implements JobHandler {
             .build();
 
         AmsResponse amsResponse = quoteUserService.quoteUser(amsRequest);
-        String payeeQuoteStatus = amsResponse.payeeQuoteLookupStatus();
+        String payeeQuoteLookupStatus = amsResponse.payeeQuoteLookupStatus();
 
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 
         outputVariables.put("currency", null);
         outputVariables.put("payerAccountId", null);
-        outputVariables.put("payeeQuoteStatus", payeeQuoteStatus);
+        outputVariables.put("payeeQuoteLookupStatus", payeeQuoteLookupStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

@@ -44,12 +44,10 @@ public class PayerQuoteHandler implements JobHandler {
         PayerQuoteResponse payerQuoteResponse = quotePayerService.quotePayer(payerQuoteRequest);
         String payerQuoteStatus = payerQuoteResponse.payerQuoteLookupStatus();
 
-
-
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
         outputVariables.put("payeeAccountId", null);
-        //outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
-        //outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
+        outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerQuoteStatus);
+        outputVariables.put("payerQuoteLookupStatus", payerQuoteStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

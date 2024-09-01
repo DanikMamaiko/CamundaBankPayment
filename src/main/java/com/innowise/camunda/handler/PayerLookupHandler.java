@@ -69,6 +69,7 @@ public class PayerLookupHandler implements JobHandler {
         outputVariables.put("payerLookupRetryNumber", null);
         outputVariables.put("ID", null);
         outputVariables.put("transactionStatus", transactionStatus);
+        outputVariables.put("payerLookupStatus", payerLookupStatus);
         outputVariables.put("errorInformation", "USER WAS CHECKED: " + payerLookupStatus);
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
