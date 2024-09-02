@@ -1,6 +1,6 @@
 package com.innowise.camunda.worker;
 
-import com.innowise.camunda.handler.SendErrorEventHandler;
+import com.innowise.camunda.handler.SendErrorEventToChannelHandler;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SendErrorEventWorker {
+public class SendErrorEventToChannelWorker {
 
-    private final SendErrorEventHandler handler;
+    private final SendErrorEventToChannelHandler handler;
 
-    @JobWorker(type = "send-error-event")
+    @JobWorker(type = "intra-bank-send-error-event-to-channel")
     public void sendErrorEvent(final JobClient client, final ActivatedJob job) throws Exception {
         handler.handle(client, job);
     }
