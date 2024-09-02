@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class    CamundaInnowiseApplication {
+public class CamundaInnowiseApplication {
 
     private final ZeebeClient zeebeClient;
 
