@@ -38,8 +38,6 @@ public class PayeeLookupHandler implements JobHandler {
             .payeeAccountId(payeeAccountId)
             .build();
 
-
-
         AmsResponse amsResponse = lookupUserService.lookupUser(amsRequest);
         String payeeLookupStatus = amsResponse.payeeLookupStatus();
 

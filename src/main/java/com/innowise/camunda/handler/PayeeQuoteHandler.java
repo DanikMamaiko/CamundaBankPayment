@@ -40,7 +40,6 @@ public class PayeeQuoteHandler implements JobHandler {
         AmsResponse amsResponse = quoteUserService.quoteUser(amsRequest);
         String payeeQuoteLookupStatus = amsResponse.payeeQuoteLookupStatus();
 
-
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 
         outputVariables.put("currency", null);

@@ -17,13 +17,13 @@ public class LookupPayerService {
         if (existedPayersAccounts.contains(payerLookupRequest.payerAccountId())) {
             return PayerLookupResponse.builder()
                     .orderId(payerLookupRequest.orderId())
-                    .payerAccountId(payerLookupRequest.payerAccountId()) // Здесь возможно лучше использовать payerAccountId
-                    .payerAccountName(null) // Установите имя плательщика, если доступно
-                    .payerLookupStatus("exist") // Смена на payerLookupStatus
+                    .payerAccountId(payerLookupRequest.payerAccountId())
+                    .payerAccountName(null)
+                    .payerLookupStatus("exist")
                     .build();
         } else {
             return PayerLookupResponse.builder()
-                    .payerLookupStatus("notFound") // Смена на payerLookupStatus
+                    .payerLookupStatus("notFound")
                     .build();
         }
     }

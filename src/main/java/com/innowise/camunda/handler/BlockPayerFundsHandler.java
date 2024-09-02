@@ -1,13 +1,25 @@
 package com.innowise.camunda.handler;
 
+import com.innowise.camunda.AMS.dto.BlockFundsRequest;
+import com.innowise.camunda.AMS.dto.BlockFundsResponse;
+import com.innowise.camunda.AMS.dto.PayerLookupRequest;
+import com.innowise.camunda.AMS.dto.PayerLookupResponse;
+import com.innowise.camunda.AMS.service.BlockFundsService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;
+
+import java.time.Instant;
 import java.util.Map;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class BlockPayerFundsHandler implements JobHandler {
+
+    private final BlockFundsService blockFundsService;
 
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
@@ -20,11 +32,17 @@ public class BlockPayerFundsHandler implements JobHandler {
         final Integer currencyCode = (Integer) inputVariables.get("currencyCode");//?
         final Integer amount = (Integer) inputVariables.get("amount");
 
-        //TODO: add logic for blocking
-        String blockFundsTransactionStatus = "blockSuccess"; // OR blockFailed
+
+        BlockFundsRequest blockFundsRequest = BlockFundsRequest.builder()
+                .orderId(orderId)
+                .payerAccountId(payerAccountId)
+                .build();
+
+        BlockFundsResponse blockFundsTransactionStatus = blockFundsService.blockPayerFunds(blockFundsRequest);
+
 
         Map<String, Object> outputVariables = job.getVariablesAsMap();
-        outputVariables.put("payeeAccountId", null);
+        outputVariables.put("payeeAccountId", 1);
         outputVariables.put("command", null);
         outputVariables.put("blockFundsTransactionStatus", blockFundsTransactionStatus);
 
