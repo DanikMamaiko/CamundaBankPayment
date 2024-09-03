@@ -22,7 +22,6 @@ public class SettlePayerFundsHandler implements JobHandler {
 
     private final SettleFundsService settleFundsService;
 
-
     @Override
     public void handle(JobClient client, ActivatedJob job) throws Exception {
         Map<String, Object> inputVariables = job.getVariablesAsMap();
@@ -40,13 +39,10 @@ public class SettlePayerFundsHandler implements JobHandler {
                 .payeeAccountId(payeeAccountId)
                 .build();
 
-        SettleFundsResponse settlementTransactionStatus = settleFundsService.settlePayerFunds(settleFundsRequest);
-
+        SettleFundsResponse settlementTransaction = settleFundsService.settlePayerFunds(settleFundsRequest);
 
         Map<String, Object> outputVariables = new HashMap<>();
-
-
-        outputVariables.put("settlementTransactionStatus", settlementTransactionStatus);
+        outputVariables.put("settlementTransactionStatus", settlementTransaction.settlementTransactionStatus());
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

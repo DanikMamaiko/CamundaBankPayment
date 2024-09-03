@@ -10,7 +10,10 @@ import java.util.UUID;
 public class TransferFundsService {
 
     public TransferFundsResponse transferFunds(TransferFundsRequest request) {
-        if (!"success".equalsIgnoreCase(request.blockFundsTransactionStatus())) {
+        String failedBlockStatus = "blockFailed";
+        String blockStatus = request.blockFundsTransactionStatus();
+
+        if (failedBlockStatus.equals(blockStatus)) {
             return TransferFundsResponse.builder()
                     .orderId(request.orderId())
                     .releaseBlockFundsTransactionStatus("failed")

@@ -34,7 +34,6 @@ public class CheckChannelHandler implements JobHandler {
         final boolean payerConfirmationResponseRequired =
             payerConfirmationResponseService.isPayerConfirmationResponseRequired(isPayerConfirmationRequired);
 
-
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 
         outputVariables.put("payerConfirmationResponseRequired", payerConfirmationResponseRequired);

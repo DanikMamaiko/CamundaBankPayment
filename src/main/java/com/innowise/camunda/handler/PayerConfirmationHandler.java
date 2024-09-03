@@ -37,19 +37,17 @@ public class PayerConfirmationHandler implements JobHandler {
         final String channel =  (String) inputVariables.get("channel");
         final String paymentOrderStartedAt =  (String) inputVariables.get("paymentOrderStartedAt");
 
-
         PayerConfirmationRequest payerConfirmationRequest = PayerConfirmationRequest.builder()
                 .orderId(orderId)
                 .amount(amount)
                 .payerAccountId(payerAccountId)
                 .build();
 
-        PayerConfirmationResponse payerConfirmationStatus = payerConfirmationService.confirmPayer(payerConfirmationRequest);
-
+        PayerConfirmationResponse payerConfirmation = payerConfirmationService.confirmPayer(payerConfirmationRequest);
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 
-        outputVariables.put("payerConfirmationStatus", payerConfirmationStatus);
+        outputVariables.put("payerConfirmationStatus", payerConfirmation.payerConfirmationStatus());
 
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }

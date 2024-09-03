@@ -5,6 +5,8 @@ import com.innowise.camunda.AMS.dto.SettleFundsResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+
 @Component
 public class SettleFundsService {
 
@@ -19,11 +21,11 @@ public class SettleFundsService {
         if (isSettled) {
             return SettleFundsResponse.builder()
                     .orderId(settleFundsRequest.orderId())
-                    .settlementTransactionStatus("success")
+                    .settlementTransactionStatus("releaseBlockSuccess")
                     .build();
         } else {
             return SettleFundsResponse.builder()
-                    .settlementTransactionStatus("failed")
+                    .settlementTransactionStatus("releaseBlockFailed")
                     .build();
         }
     }
@@ -35,6 +37,4 @@ public class SettleFundsService {
         }
         return true;
     }
-
-
 }

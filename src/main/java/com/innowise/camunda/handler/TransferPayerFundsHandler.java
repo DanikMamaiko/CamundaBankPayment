@@ -29,22 +29,22 @@ public class TransferPayerFundsHandler implements JobHandler {
         final String paymentType = (String) inputVariables.get("paymentType");
         final String payerAccountId = (String) inputVariables.get("payerAccountId");
         final String payeeAccountId = (String) inputVariables.get("payeeAccountId");
-        final String blockFundsTransactionId = (String) inputVariables.get("blockFundsTransactionStatus");
+        final String blockFundsTransactionStatus = (String) inputVariables.get("blockFundsTransactionStatus");
 
         TransferFundsRequest transferFundsRequest = TransferFundsRequest.builder()
                 .orderId(orderId)
                 .payerAccountId(payerAccountId)
                 .payeeAccountId(payeeAccountId)
-                .blockFundsTransactionStatus(blockFundsTransactionId)
+                .blockFundsTransactionStatus(blockFundsTransactionStatus)
                 .build();
 
-        TransferFundsResponse releaseBlockFundsTransactionStatus = transferFundsService.transferFunds(transferFundsRequest);
+        TransferFundsResponse releaseBlockFundsTransaction = transferFundsService.transferFunds(transferFundsRequest);
 
         Map<String, Object> outputVariables = new HashMap<>();
-
         outputVariables.put("command", null);
-        outputVariables.put("releaseBlockFundsTransactionStatus", releaseBlockFundsTransactionStatus);
+        outputVariables.put("releaseBlockFundsTransactionStatus", releaseBlockFundsTransaction.releaseBlockFundsTransactionStatus());
         outputVariables.put("fundsTransferTransactionId", null);
+
         client.newCompleteCommand(job.getKey()).variables(outputVariables).send().join();
     }
 }
