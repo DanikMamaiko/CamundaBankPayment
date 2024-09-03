@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13txdlj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="local-quote-request">
+    <bpmn:participant id="Participant_0hklj2n" name="Payment Hub" processRef="local-quote-service" />
+    <bpmn:participant id="Participant_0dhor2b" name="Account Management System" processRef="Process_0pc9ydt" />
+    <bpmn:messageFlow id="Flow_18rzwtv" sourceRef="Activity_0ezzs42" targetRef="Activity_0yoasxs" />
+    <bpmn:messageFlow id="Flow_1gvt5hx" sourceRef="Activity_0yoasxs" targetRef="Activity_0ezzs42" />
+  </bpmn:collaboration>
+  <bpmn:process id="local-quote-service" name="local-quote-service" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Local Quote Request">
+      <bpmn:outgoing>Flow_0wkj0ko</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0wkj0ko" sourceRef="StartEvent_1" targetRef="Activity_0ezzs42" />
+    <bpmn:exclusiveGateway id="Gateway_1q6pogj" name="Is request successed?">
+      <bpmn:incoming>Flow_1gk4tdf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1cgox6g</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1j7r3kr</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1gk4tdf" sourceRef="Activity_0ezzs42" targetRef="Gateway_1q6pogj" />
+    <bpmn:endEvent id="Event_0v92d7j" name="Information was sended">
+      <bpmn:incoming>Flow_1cgox6g</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1cgox6g" name="yes" sourceRef="Gateway_1q6pogj" targetRef="Event_0v92d7j">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=localQuoteLookupStatus="exist"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1j7r3kr" name="no" sourceRef="Gateway_1q6pogj" targetRef="Event_07krlt3">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=localQuoteLookupStatus="notFound"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_07krlt3" name="Request was failure">
+      <bpmn:incoming>Flow_1j7r3kr</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1gmvgjq" errorRef="Error_01t4d3y" />
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_0ezzs42" name="Send Local Quote Request">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-local-quote" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0wkj0ko</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gk4tdf</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:process id="Process_0pc9ydt" isExecutable="false">
+    <bpmn:task id="Activity_0yoasxs" name="Perform Local Quote Check" />
+  </bpmn:process>
+  <bpmn:error id="Error_01t4d3y" name="LocalQuoteError" errorCode="LocalQuoteError" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="local-quote-request">
+      <bpmndi:BPMNShape id="Participant_0hklj2n_di" bpmnElement="Participant_0hklj2n" isHorizontal="true">
+        <dc:Bounds x="120" y="40" width="500" height="280" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="168" y="202" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1q6pogj_di" bpmnElement="Gateway_1q6pogj" isMarkerVisible="true">
+        <dc:Bounds x="415" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="411" y="209" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v92d7j_di" bpmnElement="Event_0v92d7j">
+        <dc:Bounds x="522" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="202" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0iynz26_di" bpmnElement="Event_07krlt3">
+        <dc:Bounds x="422" y="72" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="408" y="42" width="65" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c9l2xw_di" bpmnElement="Activity_0ezzs42">
+        <dc:Bounds x="260" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0wkj0ko_di" bpmnElement="Flow_0wkj0ko">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="260" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gk4tdf_di" bpmnElement="Flow_1gk4tdf">
+        <di:waypoint x="360" y="177" />
+        <di:waypoint x="415" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cgox6g_di" bpmnElement="Flow_1cgox6g">
+        <di:waypoint x="465" y="177" />
+        <di:waypoint x="522" y="177" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="485" y="159" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j7r3kr_di" bpmnElement="Flow_1j7r3kr">
+        <di:waypoint x="440" y="152" />
+        <di:waypoint x="440" y="108" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="449" y="127" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_0dhor2b_di" bpmnElement="Participant_0dhor2b" isHorizontal="true">
+        <dc:Bounds x="120" y="320" width="500" height="220" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yoasxs_di" bpmnElement="Activity_0yoasxs">
+        <dc:Bounds x="260" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_18rzwtv_di" bpmnElement="Flow_18rzwtv">
+        <di:waypoint x="270" y="217" />
+        <di:waypoint x="270" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gvt5hx_di" bpmnElement="Flow_1gvt5hx">
+        <di:waypoint x="350" y="380" />
+        <di:waypoint x="350" y="217" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

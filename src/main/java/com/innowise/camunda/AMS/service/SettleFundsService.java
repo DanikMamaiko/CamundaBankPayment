@@ -30,7 +30,7 @@ public class SettleFundsService {
         }
     }
 
-    private boolean settleFundsLogic(SettleFundsRequest request) {
+    private static boolean settleFundsLogic(SettleFundsRequest request) {
         //TODO: add logic
         return true;
     }

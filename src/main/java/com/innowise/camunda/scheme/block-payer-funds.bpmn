@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_07ghix7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="block-payer-request">
+    <bpmn:participant id="Participant_07csplg" name="Payment Hub" processRef="block-funds-service" />
+    <bpmn:participant id="Participant_0k8y3rh" name="Account Managament System" processRef="Process_0s24u8z" />
+    <bpmn:messageFlow id="Flow_1c3yevw" sourceRef="Activity_0eemc1d" targetRef="Activity_1urve24" />
+    <bpmn:messageFlow id="Flow_0tjjswh" sourceRef="Activity_1urve24" targetRef="Activity_0eemc1d" />
+  </bpmn:collaboration>
+  <bpmn:process id="block-funds-service" name="block-funds-service" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Block Payer Funds&#10; Request">
+      <bpmn:outgoing>Flow_1szrp15</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_0eemc1d" name="Block Payer Funds">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-block-payer-funds" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1szrp15</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jat2mm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1rqsvxi" name="Is the funds block successed?">
+      <bpmn:incoming>Flow_1jat2mm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m3x988</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0qjocn7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0gccb7p" name="Block Payer Escalation">
+      <bpmn:incoming>Flow_0qjocn7</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1ryd9v1" errorRef="Error_0lqrf6s" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_19pzjmv" name="Block Payer Funds End">
+      <bpmn:incoming>Flow_0m3x988</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1szrp15" sourceRef="StartEvent_1" targetRef="Activity_0eemc1d" />
+    <bpmn:sequenceFlow id="Flow_1jat2mm" sourceRef="Activity_0eemc1d" targetRef="Gateway_1rqsvxi" />
+    <bpmn:sequenceFlow id="Flow_0m3x988" name="yes" sourceRef="Gateway_1rqsvxi" targetRef="Event_19pzjmv">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=blockFundsTransactionStatus="blockSuccess"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0qjocn7" name="no" sourceRef="Gateway_1rqsvxi" targetRef="Event_0gccb7p">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=blockFundsTransactionStatus="blockFailed"
+</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:process id="Process_0s24u8z" isExecutable="false">
+    <bpmn:task id="Activity_1urve24" name="Block Payer’s Funds Check" />
+  </bpmn:process>
+  <bpmn:error id="Error_0lqrf6s" name="BlockFundsError" errorCode="BlockFundsError" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="block-payer-request">
+      <bpmndi:BPMNShape id="Participant_07csplg_di" bpmnElement="Participant_07csplg" isHorizontal="true">
+        <dc:Bounds x="129" y="80" width="551" height="292" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="167" y="272" width="61" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lv6lan_di" bpmnElement="Activity_0eemc1d">
+        <dc:Bounds x="260" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rqsvxi_di" bpmnElement="Gateway_1rqsvxi" isMarkerVisible="true">
+        <dc:Bounds x="445" y="222" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="427" y="279" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xc8e1l_di" bpmnElement="Event_0gccb7p">
+        <dc:Bounds x="452" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="440" y="102" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_19pzjmv_di" bpmnElement="Event_19pzjmv">
+        <dc:Bounds x="572" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="560" y="272" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1szrp15_di" bpmnElement="Flow_1szrp15">
+        <di:waypoint x="215" y="247" />
+        <di:waypoint x="260" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jat2mm_di" bpmnElement="Flow_1jat2mm">
+        <di:waypoint x="360" y="247" />
+        <di:waypoint x="445" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m3x988_di" bpmnElement="Flow_0m3x988">
+        <di:waypoint x="495" y="247" />
+        <di:waypoint x="572" y="247" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="525" y="229" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qjocn7_di" bpmnElement="Flow_0qjocn7">
+        <di:waypoint x="470" y="222" />
+        <di:waypoint x="470" y="168" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="479" y="192" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_0k8y3rh_di" bpmnElement="Participant_0k8y3rh" isHorizontal="true">
+        <dc:Bounds x="129" y="370" width="551" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1urve24_di" bpmnElement="Activity_1urve24">
+        <dc:Bounds x="260" y="450" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1c3yevw_di" bpmnElement="Flow_1c3yevw">
+        <di:waypoint x="270" y="287" />
+        <di:waypoint x="270" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tjjswh_di" bpmnElement="Flow_0tjjswh">
+        <di:waypoint x="350" y="450" />
+        <di:waypoint x="350" y="287" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

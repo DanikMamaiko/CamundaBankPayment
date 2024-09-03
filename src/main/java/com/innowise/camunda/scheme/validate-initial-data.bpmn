@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1mw3542" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="validateTransactionalDataTaskHandler" name="Validate Transactional Data" isExecutable="true">
+    <bpmn:extensionElements />
+    <bpmn:startEvent id="StartEvent_1" name="Validate Initial Transactional Data">
+      <bpmn:outgoing>Flow_026bgmm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1lg7a9l" name="Is validation passed?">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1opmdmn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rpdb7z</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1cz6gxz</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1gkmpeo" name="Validation passed successfully">
+      <bpmn:incoming>Flow_0rpdb7z</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_026bgmm" sourceRef="StartEvent_1" targetRef="Activity_1wyb6kp" />
+    <bpmn:sequenceFlow id="Flow_1opmdmn" sourceRef="Activity_1wyb6kp" targetRef="Gateway_1lg7a9l" />
+    <bpmn:sequenceFlow id="Flow_0rpdb7z" name="yes" sourceRef="Gateway_1lg7a9l" targetRef="Event_1gkmpeo">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=validationStatus="success"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1cz6gxz" name="no" sourceRef="Gateway_1lg7a9l" targetRef="Event_01o0p4b">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=validationStatus="failed"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_1wyb6kp" name="Validate Transactional Data">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-validate-transactional-data" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_026bgmm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1opmdmn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_01o0p4b" name="Validation was failed">
+      <bpmn:incoming>Flow_1cz6gxz</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_04whdjc" errorRef="Error_1ejr1uz" />
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmn:error id="Error_1ejr1uz" name="ValidationFaild" errorCode="ValidationFaild" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="validateTransactionalDataTaskHandler">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="219" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="262" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1lg7a9l_di" bpmnElement="Gateway_1lg7a9l" isMarkerVisible="true">
+        <dc:Bounds x="445" y="212" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="441" y="269" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gkmpeo_di" bpmnElement="Event_1gkmpeo">
+        <dc:Bounds x="572" y="219" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="547" y="262" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02xi55y_di" bpmnElement="Activity_1wyb6kp">
+        <dc:Bounds x="280" y="197" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_175twul_di" bpmnElement="Event_01o0p4b">
+        <dc:Bounds x="452" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="435" y="82" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_026bgmm_di" bpmnElement="Flow_026bgmm">
+        <di:waypoint x="215" y="237" />
+        <di:waypoint x="280" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1opmdmn_di" bpmnElement="Flow_1opmdmn">
+        <di:waypoint x="380" y="237" />
+        <di:waypoint x="445" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rpdb7z_di" bpmnElement="Flow_0rpdb7z">
+        <di:waypoint x="495" y="237" />
+        <di:waypoint x="572" y="237" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="526" y="219" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cz6gxz_di" bpmnElement="Flow_1cz6gxz">
+        <di:waypoint x="470" y="212" />
+        <di:waypoint x="470" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="479" y="177" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

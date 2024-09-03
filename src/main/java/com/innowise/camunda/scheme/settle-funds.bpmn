@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_15tica5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="settle-funds">
+    <bpmn:participant id="Participant_1n26zel" name="Payment Hub" processRef="settle-funds-service" />
+    <bpmn:participant id="Participant_1dtnfkg" name="Account Managament System" processRef="Process_0lhfriw" />
+    <bpmn:messageFlow id="Flow_1q9egv7" name="Response" sourceRef="Activity_1nj3bsi" targetRef="Activity_1bnoxsp" />
+    <bpmn:messageFlow id="Flow_1xpk9t1" name="Request" sourceRef="Activity_1bnoxsp" targetRef="Activity_1nj3bsi" />
+  </bpmn:collaboration>
+  <bpmn:process id="settle-funds-service" name="settle-funds-service" isExecutable="true">
+    <bpmn:startEvent id="Event_17hu4cr" name="Transfer Funds&#10; Request">
+      <bpmn:outgoing>Flow_0mto72s</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1uzwakm" name="Is payer funds transfer successed?">
+      <bpmn:incoming>Flow_0wv0fct</bpmn:incoming>
+      <bpmn:outgoing>Flow_19nesrq</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1og4d9p</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0zdwbcd" name="Transfer Funds End">
+      <bpmn:incoming>Flow_19nesrq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1bnoxsp" name="Transfer Funds">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-payer-settle-funds" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0mto72s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wv0fct</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_10y13cj">
+      <bpmn:incoming>Flow_1og4d9p</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1kuvdte" errorRef="Error_0b8m8la" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mto72s" sourceRef="Event_17hu4cr" targetRef="Activity_1bnoxsp" />
+    <bpmn:sequenceFlow id="Flow_0wv0fct" sourceRef="Activity_1bnoxsp" targetRef="Gateway_1uzwakm" />
+    <bpmn:sequenceFlow id="Flow_19nesrq" name="Success" sourceRef="Gateway_1uzwakm" targetRef="Event_0zdwbcd">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=settlementTransactionStatus="releaseBlockSuccess"
+</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1og4d9p" name="failed" sourceRef="Gateway_1uzwakm" targetRef="Event_10y13cj">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=settlementTransactionStatus="releaseBlockFailed"
+</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:process id="Process_0lhfriw" isExecutable="false">
+    <bpmn:task id="Activity_1nj3bsi" name="Transfer Funds Check" />
+  </bpmn:process>
+  <bpmn:error id="Error_0b8m8la" name="SettleFundsError" errorCode="SettleFundsError" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="settle-funds">
+      <bpmndi:BPMNShape id="Participant_1n26zel_di" bpmnElement="Participant_1n26zel" isHorizontal="true">
+        <dc:Bounds x="200" y="80" width="750" height="300" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17hu4cr_di" bpmnElement="Event_17hu4cr">
+        <dc:Bounds x="262" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="244" y="305" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1uzwakm_di" bpmnElement="Gateway_1uzwakm" isMarkerVisible="true">
+        <dc:Bounds x="715" y="255" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="705" y="312" width="70" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zdwbcd_di" bpmnElement="Event_0zdwbcd">
+        <dc:Bounds x="872" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="853" y="305" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bnoxsp_di" bpmnElement="Activity_1bnoxsp">
+        <dc:Bounds x="470" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hr57gj_di" bpmnElement="Event_10y13cj">
+        <dc:Bounds x="722" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0mto72s_di" bpmnElement="Flow_0mto72s">
+        <di:waypoint x="298" y="280" />
+        <di:waypoint x="470" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wv0fct_di" bpmnElement="Flow_0wv0fct">
+        <di:waypoint x="570" y="280" />
+        <di:waypoint x="715" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19nesrq_di" bpmnElement="Flow_19nesrq">
+        <di:waypoint x="765" y="280" />
+        <di:waypoint x="872" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="798" y="262" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1og4d9p_di" bpmnElement="Flow_1og4d9p">
+        <di:waypoint x="740" y="255" />
+        <di:waypoint x="740" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="743" y="199" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_1dtnfkg_di" bpmnElement="Participant_1dtnfkg" isHorizontal="true">
+        <dc:Bounds x="200" y="380" width="750" height="190" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_134qq6u" bpmnElement="Activity_1nj3bsi">
+        <dc:Bounds x="470" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1q9egv7_di" bpmnElement="Flow_1q9egv7">
+        <di:waypoint x="560" y="410" />
+        <di:waypoint x="560" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="565" y="358" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xpk9t1_di" bpmnElement="Flow_1xpk9t1">
+        <di:waypoint x="478" y="319" />
+        <di:waypoint x="478" y="411" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="489" y="359" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

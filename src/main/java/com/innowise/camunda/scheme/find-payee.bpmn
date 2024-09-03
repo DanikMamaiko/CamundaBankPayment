@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_17nhb3z" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="find-payee">
+    <bpmn:participant id="Participant_15i9rze" name="Payment Hub" processRef="find-payee-service" />
+    <bpmn:participant id="Participant_08zdcfw" name="Account Management System" processRef="Process_1b45q2g" />
+    <bpmn:messageFlow id="Flow_1clv9mu" sourceRef="intra-bank-payer-user-lookup" targetRef="Activity_1gd49sj" />
+    <bpmn:messageFlow id="Flow_14qc331" sourceRef="Activity_1gd49sj" targetRef="intra-bank-payer-user-lookup" />
+  </bpmn:collaboration>
+  <bpmn:process id="find-payee-service" name="find-payee-service" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Payee User Lookup request">
+      <bpmn:outgoing>Flow_0us4unx</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="intra-bank-payer-user-lookup" name="Send Payee User Lookup Request">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-payee-user-lookup" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0us4unx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1c5hwmh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_14802ph" name="Is payee found?">
+      <bpmn:incoming>Flow_1c5hwmh</bpmn:incoming>
+      <bpmn:outgoing>Flow_16cemg4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_06nxuwy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0a5x6es" name="Payee is found">
+      <bpmn:incoming>Flow_16cemg4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_14xpucr" name="Payee is not found">
+      <bpmn:incoming>Flow_06nxuwy</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_08mlbjc" errorRef="Error_0nqpq7c" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0us4unx" sourceRef="StartEvent_1" targetRef="intra-bank-payer-user-lookup" />
+    <bpmn:sequenceFlow id="Flow_1c5hwmh" sourceRef="intra-bank-payer-user-lookup" targetRef="Gateway_14802ph" />
+    <bpmn:sequenceFlow id="Flow_16cemg4" name="yes" sourceRef="Gateway_14802ph" targetRef="Event_0a5x6es">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=payeeLookupStatus="exist"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06nxuwy" name="no" sourceRef="Gateway_14802ph" targetRef="Event_14xpucr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=payeeLookupStatus="notFound"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:process id="Process_1b45q2g" isExecutable="false">
+    <bpmn:task id="Activity_1gd49sj" name="Look for a payer" />
+  </bpmn:process>
+  <bpmn:error id="Error_0nqpq7c" name="FindPayeeError" errorCode="FindPayeeError" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="find-payee">
+      <bpmndi:BPMNShape id="Participant_15i9rze_di" bpmnElement="Participant_15i9rze" isHorizontal="true">
+        <dc:Bounds x="120" y="80" width="530" height="302" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="239" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="282" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1s52f03_di" bpmnElement="intra-bank-payer-user-lookup">
+        <dc:Bounds x="270" y="217" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_14802ph_di" bpmnElement="Gateway_14802ph" isMarkerVisible="true">
+        <dc:Bounds x="425" y="232" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="411" y="289" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0a5x6es_di" bpmnElement="Event_0a5x6es">
+        <dc:Bounds x="532" y="239" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="514" y="282" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0na4occ_di" bpmnElement="Event_14xpucr">
+        <dc:Bounds x="432" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="419" y="112" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0us4unx_di" bpmnElement="Flow_0us4unx">
+        <di:waypoint x="215" y="257" />
+        <di:waypoint x="270" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c5hwmh_di" bpmnElement="Flow_1c5hwmh">
+        <di:waypoint x="370" y="257" />
+        <di:waypoint x="425" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16cemg4_di" bpmnElement="Flow_16cemg4">
+        <di:waypoint x="475" y="257" />
+        <di:waypoint x="532" y="257" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="495" y="239" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06nxuwy_di" bpmnElement="Flow_06nxuwy">
+        <di:waypoint x="450" y="232" />
+        <di:waypoint x="450" y="178" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="459" y="202" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_08zdcfw_di" bpmnElement="Participant_08zdcfw" isHorizontal="true">
+        <dc:Bounds x="120" y="380" width="530" height="210" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gd49sj_di" bpmnElement="Activity_1gd49sj">
+        <dc:Bounds x="270" y="450" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1clv9mu_di" bpmnElement="Flow_1clv9mu">
+        <di:waypoint x="280" y="297" />
+        <di:waypoint x="280" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14qc331_di" bpmnElement="Flow_14qc331">
+        <di:waypoint x="360" y="450" />
+        <di:waypoint x="360" y="297" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

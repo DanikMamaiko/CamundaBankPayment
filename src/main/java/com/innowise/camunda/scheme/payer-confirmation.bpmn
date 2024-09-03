@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0sv9d5b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:collaboration id="payer-confirmation">
+    <bpmn:participant id="Participant_1dfzzx3" name="Payment Hub" processRef="payer-confirmation-service" />
+    <bpmn:participant id="Participant_1eofbil" name="Account Management System" processRef="Process_0089afg" />
+    <bpmn:messageFlow id="Flow_0f9a26s" sourceRef="Activity_1u8hav6" targetRef="intra-bank-payer-confirmation" />
+    <bpmn:messageFlow id="Flow_0boh9qm" sourceRef="intra-bank-payer-confirmation" targetRef="Activity_1u8hav6">
+      <bpmn:extensionElements>
+        <zeebe:properties>
+          <zeebe:property />
+        </zeebe:properties>
+      </bpmn:extensionElements>
+    </bpmn:messageFlow>
+  </bpmn:collaboration>
+  <bpmn:process id="payer-confirmation-service" name="payer-confirmation-service" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Payer Confirmation request">
+      <bpmn:outgoing>Flow_1debjsh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_0z5d98i" name="Is Confirmation succeed?">
+      <bpmn:incoming>Flow_05ovfxl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j4lf8q</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1qagxs1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1kefogt" name="Payer is confirmed">
+      <bpmn:incoming>Flow_0j4lf8q</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_0ilih8b" name="Confirmation failed">
+      <bpmn:incoming>Flow_1qagxs1</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0lba7xd" errorRef="Error_0sssfz5" />
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="intra-bank-payer-confirmation" name="intra-bank-payer-confirmation">
+      <bpmn:documentation>This worker is designed to handle tasks of type "intra-bank-payer-user-lookup".</bpmn:documentation>
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="intra-bank-payer-confirmation" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1debjsh</bpmn:incoming>
+      <bpmn:outgoing>Flow_05ovfxl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1debjsh" sourceRef="StartEvent_1" targetRef="intra-bank-payer-confirmation" />
+    <bpmn:sequenceFlow id="Flow_05ovfxl" sourceRef="intra-bank-payer-confirmation" targetRef="Gateway_0z5d98i" />
+    <bpmn:sequenceFlow id="Flow_0j4lf8q" name="yes" sourceRef="Gateway_0z5d98i" targetRef="Event_1kefogt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=payerConfirmationStatus="confirmed"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1qagxs1" name="no" sourceRef="Gateway_0z5d98i" targetRef="Event_0ilih8b">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=payerConfirmationStatus="rejected"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:process id="Process_0089afg" isExecutable="false">
+    <bpmn:task id="Activity_1u8hav6" name="Confirm Payer">
+      <bpmn:extensionElements>
+        <zeebe:properties>
+          <zeebe:property />
+        </zeebe:properties>
+      </bpmn:extensionElements>
+    </bpmn:task>
+  </bpmn:process>
+  <bpmn:error id="Error_0sssfz5" name="PayerConfirmationError" errorCode="PayerConfirmationError" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="payer-confirmation">
+      <bpmndi:BPMNShape id="Participant_1dfzzx3_di" bpmnElement="Participant_1dfzzx3" isHorizontal="true">
+        <dc:Bounds x="160" y="50" width="640" height="362" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1s7gigt" bpmnElement="StartEvent_1">
+        <dc:Bounds x="249" y="279" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="235" y="242" width="63" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0z5d98i_di" bpmnElement="Gateway_0z5d98i" isMarkerVisible="true">
+        <dc:Bounds x="535" y="272" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="524" y="329" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1kefogt_di" bpmnElement="Event_1kefogt">
+        <dc:Bounds x="682" y="279" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="676" y="322" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ys8aqa_di" bpmnElement="Event_0ilih8b">
+        <dc:Bounds x="542" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="530" y="132" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1v8k1vo_di" bpmnElement="intra-bank-payer-confirmation">
+        <dc:Bounds x="370" y="257" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1debjsh_di" bpmnElement="Flow_1debjsh">
+        <di:waypoint x="285" y="297" />
+        <di:waypoint x="370" y="297" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05ovfxl_di" bpmnElement="Flow_05ovfxl">
+        <di:waypoint x="470" y="297" />
+        <di:waypoint x="535" y="297" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j4lf8q_di" bpmnElement="Flow_0j4lf8q">
+        <di:waypoint x="585" y="297" />
+        <di:waypoint x="682" y="297" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="625" y="279" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qagxs1_di" bpmnElement="Flow_1qagxs1">
+        <di:waypoint x="560" y="272" />
+        <di:waypoint x="560" y="198" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="569" y="232" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_1eofbil_di" bpmnElement="Participant_1eofbil" isHorizontal="true">
+        <dc:Bounds x="160" y="410" width="640" height="190" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u8hav6_di" bpmnElement="Activity_1u8hav6">
+        <dc:Bounds x="370" y="470" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0f9a26s_di" bpmnElement="Flow_0f9a26s">
+        <di:waypoint x="460" y="470" />
+        <di:waypoint x="460" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0boh9qm_di" bpmnElement="Flow_0boh9qm">
+        <di:waypoint x="390" y="337" />
+        <di:waypoint x="390" y="470" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
