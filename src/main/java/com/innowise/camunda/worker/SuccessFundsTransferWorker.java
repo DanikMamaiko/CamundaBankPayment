@@ -13,7 +13,7 @@ public class SuccessFundsTransferWorker {
 
     private final SuccessFundsTransferHandler handler;
 
-    @JobWorker(type = " intra-bank-successful-funds-transfer-event")
+    @JobWorker(type = "intra-bank-successful-funds-transfer-event")
     public void successFundsTransferWorker(final JobClient client, final ActivatedJob job)
         throws Exception {
         handler.handle(client, job);

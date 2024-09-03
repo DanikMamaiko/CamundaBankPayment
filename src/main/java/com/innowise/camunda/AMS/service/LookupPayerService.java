@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 public class LookupPayerService {
     public PayerLookupResponse lookupPayer(PayerLookupRequest payerLookupRequest) {
 
-        // Список существующих счетов плательщиков
         final List<String> existedPayersAccounts =
                 List.of("CM2110002000300277976315008", "AB2110002000300277976315009");
 
-        // Проверка, существует ли указанный плательщик
         if (existedPayersAccounts.contains(payerLookupRequest.payerAccountId())) {
             return PayerLookupResponse.builder()
                     .orderId(payerLookupRequest.orderId())

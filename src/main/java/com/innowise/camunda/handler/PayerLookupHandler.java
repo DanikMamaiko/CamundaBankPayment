@@ -1,11 +1,8 @@
 package com.innowise.camunda.handler;
 
-import com.innowise.camunda.AMS.dto.AmsRequest;
-import com.innowise.camunda.AMS.dto.AmsResponse;
 import com.innowise.camunda.AMS.dto.PayerLookupRequest;
 import com.innowise.camunda.AMS.dto.PayerLookupResponse;
 import com.innowise.camunda.AMS.service.LookupPayerService;
-import com.innowise.camunda.AMS.service.LookupUserService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;

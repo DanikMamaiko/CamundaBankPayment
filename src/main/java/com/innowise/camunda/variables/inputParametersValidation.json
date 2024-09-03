@@ -7,7 +7,7 @@
   "payeeAccountId": "AB2110002000300277976315009",
   "currencyCode": 933,
   "currencyName": "BYN",
-  "amount": 2000,
+  "amount": 200,
   "remittanceDetails": "internal-payment",
   "channel": "MK4352"
 }

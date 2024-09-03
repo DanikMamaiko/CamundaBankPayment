@@ -13,7 +13,7 @@ public class SendUnknownStatusEvenWorker {
 
     private final SendErrorEventToChannelHandler handler;
 
-    @JobWorker(type = " intra-bank-unknown-status-even-error")
+    @JobWorker(type = "intra-bank-unknown-status-even-error")
     public void sendErrorEvent(final JobClient client, final ActivatedJob job) throws Exception {
         handler.handle(client, job);
     }

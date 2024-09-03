@@ -1,18 +1,13 @@
 package com.innowise.camunda.handler;
 
-import com.innowise.camunda.AMS.dto.PayerLookupRequest;
-import com.innowise.camunda.AMS.dto.PayerLookupResponse;
 import com.innowise.camunda.AMS.dto.SettleFundsRequest;
 import com.innowise.camunda.AMS.dto.SettleFundsResponse;
 import com.innowise.camunda.AMS.service.SettleFundsService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobHandler;
-
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

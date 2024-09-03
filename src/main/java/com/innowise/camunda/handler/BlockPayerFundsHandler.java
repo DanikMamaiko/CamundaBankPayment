@@ -30,6 +30,7 @@ public class BlockPayerFundsHandler implements JobHandler {
         BlockFundsRequest blockFundsRequest = BlockFundsRequest.builder()
             .orderId(orderId)
             .payerAccountId(payerAccountId)
+            .amount(amount)
             .build();
 
         BlockFundsResponse blockFundsTransaction =

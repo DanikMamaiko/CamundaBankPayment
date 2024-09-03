@@ -1,23 +1,19 @@
 package com.innowise.camunda.AMS.service;
 
-import com.innowise.camunda.AMS.dto.BlockFundsResponse;
 import com.innowise.camunda.AMS.dto.BlockFundsRequest;
 import com.innowise.camunda.AMS.dto.BlockFundsResponse;
-import java.util.List;
-
-import com.innowise.camunda.AMS.dto.PayerLookupResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BlockFundsService {
+
+    private final int PAYER_BALANCE = 1000;
+
     public BlockFundsResponse blockPayerFunds(BlockFundsRequest blockFundsRequest) {
 
-        final List<String> existedPayersAccounts = List.of(
-                "CM2110002000300277976315008",
-                "AB2110002000300277976315009"
-        );
+        int transferAmount = blockFundsRequest.amount();
 
-        if (existedPayersAccounts.contains(blockFundsRequest.payerAccountId())) {
+        if (PAYER_BALANCE - transferAmount > 0) {
 
             return BlockFundsResponse.builder()
                     .orderId(blockFundsRequest.orderId())
@@ -29,6 +25,5 @@ public class BlockFundsService {
                     .blockFundsTransactionStatus("blockFailed")
                     .build();
         }
-
     }
 }

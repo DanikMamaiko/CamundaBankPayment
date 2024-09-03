@@ -31,10 +31,7 @@ public class SettleFundsService {
     }
 
     private boolean settleFundsLogic(SettleFundsRequest request) {
-        if (!EXISTING_ACCOUNTS.contains(request.payerAccountId()) ||
-                !EXISTING_ACCOUNTS.contains(request.payeeAccountId())) {
-            return false;
-        }
+        //TODO: add logic
         return true;
     }
 }

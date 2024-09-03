@@ -10,21 +10,10 @@ import java.util.UUID;
 public class TransferFundsService {
 
     public TransferFundsResponse transferFunds(TransferFundsRequest request) {
-        String failedBlockStatus = "blockFailed";
-        String blockStatus = request.blockFundsTransactionStatus();
-
-        if (failedBlockStatus.equals(blockStatus)) {
-            return TransferFundsResponse.builder()
-                    .orderId(request.orderId())
-                    .releaseBlockFundsTransactionStatus("failed")
-                    .fundsTransferTransactionId(null)
-                    .build();
-        }
-
         boolean isTransferSuccessful = transferFundsLogic(request.payerAccountId(), request.payeeAccountId());
 
         if (isTransferSuccessful) {
-            String transactionId = UUID.randomUUID().toString(); // Генерация уникального ID для транзакции
+            String transactionId = UUID.randomUUID().toString();
             return TransferFundsResponse.builder()
                     .orderId(request.orderId())
                     .releaseBlockFundsTransactionStatus("success")
@@ -39,10 +28,8 @@ public class TransferFundsService {
         }
     }
 
-    //  перевод средств
     private boolean transferFundsLogic(String payerAccountId, String payeeAccountId) {
-
-        // Сейчас просто имитирует успешный перевод
+        // TODO: write logic
         return true;
     }
 }

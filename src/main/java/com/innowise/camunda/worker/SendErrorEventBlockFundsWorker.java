@@ -13,7 +13,7 @@ public class SendErrorEventBlockFundsWorker {
 
     private final SendErrorEventToChannelHandler handler;
 
-    @JobWorker(type = " intra-bank-error-event-block-funds")
+    @JobWorker(type = "intra-bank-error-event-block-funds")
     public void sendErrorEvent(final JobClient client, final ActivatedJob job) throws Exception {
         handler.handle(client, job);
     }
