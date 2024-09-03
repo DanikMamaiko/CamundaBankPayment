@@ -32,13 +32,10 @@ public class PayeeLookupHandler implements JobHandler {
         final String channel = (String) inputVariables.get("channel");
         final String paymentOrderStartedAt = (String) inputVariables.get("paymentOrderStartedAt");
 
-
         AmsRequest amsRequest = AmsRequest.builder()
             .orderId(orderId)
             .payeeAccountId(payeeAccountId)
             .build();
-
-
 
         AmsResponse amsResponse = lookupUserService.lookupUser(amsRequest);
         String payeeLookupStatus = amsResponse.payeeLookupStatus();

@@ -29,12 +29,10 @@ public class CheckChannelHandler implements JobHandler {
         final String channel =  (String) inputVariables.get("channel");
         final String paymentOrderStartedAt =  (String) inputVariables.get("paymentOrderStartedAt");
 
-        //TODO: Add logic
         final boolean isPayerConfirmationRequired = true;
 
         final boolean payerConfirmationResponseRequired =
             payerConfirmationResponseService.isPayerConfirmationResponseRequired(isPayerConfirmationRequired);
-
 
         final Map<String, Object> outputVariables = new HashMap<String, Object>();
 

@@ -14,5 +14,4 @@ public class CamundaInnowiseApplication {
     public static void main(String[] args) {
         SpringApplication.run(CamundaInnowiseApplication.class, args);
     }
-
 }

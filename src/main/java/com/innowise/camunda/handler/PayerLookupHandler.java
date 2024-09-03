@@ -57,7 +57,6 @@ public class PayerLookupHandler implements JobHandler {
             transactionStatus = "PAYER_NOT_FOUND";  // Плательщик не найден
         }
 
-        // Подготовка выходных переменных
         final Map<String, Object> outputVariables = new HashMap<>();
         outputVariables.put("processId", null);
         outputVariables.put("paymentOrderStartedAt", null);
